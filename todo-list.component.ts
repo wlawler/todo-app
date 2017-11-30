@@ -1,6 +1,7 @@
 import { Component } from '@angular/core'
 import { ViewChildren } from '@angular/core'
 import TodoComponent from './todo.component';
+import { QueryList } from '@angular/core';
 
 
 @Component({
@@ -12,5 +13,5 @@ import TodoComponent from './todo.component';
     `
 })
 export default class TodoListComponent {
-    @ViewChildren(TodoComponent) todos: TodoComponent[];
+    @ViewChildren(TodoComponent) todos: QueryList<TodoComponent>;
 }
