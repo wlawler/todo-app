@@ -7,6 +7,6 @@ import { Component } from '@angular/core'
         <li>{{name}}</li>
     `
 })
-export default class TodoComponent {
+export default class TodoListItemComponent {
     name = 'todo';
 }

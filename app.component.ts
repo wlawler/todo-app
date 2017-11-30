@@ -1,12 +1,14 @@
 import {Component, NgModule, Compiler, Type} from '@angular/core';
 import { ViewChild } from '@angular/core';
 import TodoListComponent from './todo-list.component';
-import TodoComponent from './todo.component';
 import { QueryList } from '@angular/core';
 import { ViewContainerRef } from '@angular/core';
 import { ComponentFactory } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppModule } from './app.module';
+import { ComponentFactoryResolver } from '@angular/core';
+import { TemplateRef } from '@angular/core';
+import TodoListItemComponent from './todo-list-item.component';
 
 @Component({
     selector: 'cmp-app',
@@ -17,14 +19,16 @@ import { AppModule } from './app.module';
     `
 })
 export class AppComponent {
-    @ViewChild(TodoListComponent) todoList: TodoListComponent;
-    @ViewChild(TodoListComponent, {read: ViewContainerRef}) viewContainer: ViewContainerRef;
-    
-    constructor(private compiler: Compiler) {}
+    @ViewChild(TodoListComponent, {read: ViewContainerRef}) viewOfAppCmp: ViewContainerRef;
+    @ViewChild(TodoListComponent) cmpOfTodoList: TodoListComponent;
 
+    constructor(
+        private compiler: Compiler,
+        private cmpFacResolver: ComponentFactoryResolver
+    ) {}
     async addTodo() {
-        let cmpFactTodo = await this.createComponentFactory(TodoComponent);
-        this.viewContainer.createComponent(cmpFactTodo);
+        let cmpFactTodo = await this.createComponentFactory(TodoListItemComponent);
+        this.viewOfAppCmp.createComponent(cmpFactTodo);
     }
 
     // Utility methods to create a dynamic component
