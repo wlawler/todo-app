@@ -37,6 +37,7 @@
     "cssnano": "^3.10.0",
     "postcss-custom-properties": "^6.2.0",
     "postcss-url": "^7.3.0",
+    "reflect-metadata": "^0.1.10",
     "rxjs": "^5.5.2",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.5",

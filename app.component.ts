@@ -1,9 +1,14 @@
 import {Component} from '@angular/core';
+import { ViewChild } from '@angular/core';
+import TodoListComponent from './todo-list.component';
 
 @Component({
-    selector: 'app-component',
+    selector: 'cmp-app',
     template: `
-       <h1> App Component </h1>  
+       <cmp-todo-list>
+       </cmp-todo-list>
     `
 })
-export class AppComponent {}
+export class AppComponent {
+    @ViewChild(TodoListComponent) todoList: TodoListComponent;
+}
