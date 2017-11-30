@@ -9,10 +9,12 @@ import { AppModule } from './app.module';
 import { ComponentFactoryResolver } from '@angular/core';
 import { TemplateRef } from '@angular/core';
 import TodoListItemComponent from './todo-list-item.component';
+import DynamicComponentFactory from './dynamic-component.factory';
 
 @Component({
     selector: 'cmp-app',
     template: `
+        <cmp-todo-input></cmp-todo-input>
         <button (click)="addTodo()">Add</button>
         <cmp-todo-list></cmp-todo-list>
     `
@@ -23,25 +25,12 @@ export class AppComponent {
 
     constructor(
         private compiler: Compiler,
-        private cmpFacResolver: ComponentFactoryResolver
+        private svcDynCmpFactory: DynamicComponentFactory
     ) {}
     async addTodo() {
-        let cmpFactTodo = await this.createComponentFactory(TodoListItemComponent);
+        let cmpFactTodo = await this.svcDynCmpFactory.createComponent(TodoListItemComponent);
         let newTodoListItem = this.viewOfAppCmp.createComponent(cmpFactTodo);
         this.cmpOfTodoList.numTodos++;
         newTodoListItem.instance.id = this.cmpOfTodoList.numTodos;
     }
-
-    // Utility methods to create a dynamic component
-
-    private async createComponentFactory<T>(componentType: Type<T>): Promise<ComponentFactory<T>> {
-        let moduleWithComponentFactories = await this.compiler.compileModuleAndAllComponentsAsync<AppModule>(AppModule);
-        // All factories available in this module are returned instead of just the one we are interested in.
-        // We filter the array to just get the factory for this componentType.
-        let componentFactory =  moduleWithComponentFactories.componentFactories.find(fact => fact.componentType === componentType); 
-        if (componentFactory)
-            return componentFactory;
-        else throw Error("[ Error ] --- componentFactory is undefined");
-    }
-  
 }

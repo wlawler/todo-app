@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { ROUTES } from './routes';
 import TodoListComponent from './todo-list.component';
 import TodoListItemComponent from './todo-list-item.component';
+import TodoInputComponent from './todo-input.component';
+import DynamicComponentFactory from './dynamic-component.factory';
 
 @NgModule({
     entryComponents: [TodoListItemComponent],
@@ -14,7 +16,8 @@ import TodoListItemComponent from './todo-list-item.component';
 //       RouterModule.forRoot(ROUTES),
        HttpModule
     ],
-    declarations: [AppComponent, TodoListComponent, TodoListItemComponent],
+    providers: [DynamicComponentFactory],
+    declarations: [AppComponent, TodoListComponent, TodoInputComponent, TodoListItemComponent],
     exports: [AppComponent],
     bootstrap: [AppComponent]
 })
