@@ -1,9 +1,12 @@
 <html>
+    <base href="/">
     <head>
-        <script src="./dist/webpack.bundle.js">
-        </script>
+        <script src="./node_modules/core-js/client/shim.min.js"></script>
+        <script src="./node_modules/zone.js/dist/zone.js"></script>
+        <script src="./node_modules/reflect-metadata/Reflect.js"></script>
     </head>
     <body>
         <app-component></app-component>
     </body>
+    <script src="/webpack.bundle.js"></script>
 </html>
