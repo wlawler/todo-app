@@ -13,9 +13,8 @@ import TodoListItemComponent from './todo-list-item.component';
 @Component({
     selector: 'cmp-app',
     template: `
-       <cmp-todo-list>
-       </cmp-todo-list>
-       <button (click)="addTodo()">Add</button>
+        <button (click)="addTodo()">Add</button>
+        <cmp-todo-list></cmp-todo-list>
     `
 })
 export class AppComponent {
@@ -28,7 +27,9 @@ export class AppComponent {
     ) {}
     async addTodo() {
         let cmpFactTodo = await this.createComponentFactory(TodoListItemComponent);
-        this.viewOfAppCmp.createComponent(cmpFactTodo);
+        let newTodoListItem = this.viewOfAppCmp.createComponent(cmpFactTodo);
+        this.cmpOfTodoList.numTodos++;
+        newTodoListItem.instance.id = this.cmpOfTodoList.numTodos;
     }
 
     // Utility methods to create a dynamic component
