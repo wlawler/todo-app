@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core'
+import { Component, Input, Inject } from '@angular/core'
+import { AppComponent } from './app.component';
 
 
 @Component({
@@ -8,7 +9,10 @@ import { Component, Input } from '@angular/core'
     `
 })
 export default class TodoListItemComponent {
-    @Input() public id = 1;
-    @Input() public what = undefined;
-    @Input() public done = false
+    private static idCounter = 1;
+    @Input() public id = TodoListItemComponent.idCounter;
+    @Input() public what = '';
+    @Input() public done = false;
+
+    constructor() { TodoListItemComponent.idCounter++; }
 }

@@ -10,6 +10,7 @@ import { ComponentFactoryResolver } from '@angular/core';
 import { TemplateRef } from '@angular/core';
 import TodoListItemComponent from './todo-list-item.component';
 import DynamicComponentFactory from './dynamic-component.factory';
+import TodoInputComponent from './todo-input.component';
 
 @Component({
     selector: 'cmp-app',
@@ -22,15 +23,17 @@ import DynamicComponentFactory from './dynamic-component.factory';
 export class AppComponent {
     @ViewChild(TodoListComponent, {read: ViewContainerRef}) viewOfAppCmp: ViewContainerRef;
     @ViewChild(TodoListComponent) cmpOfTodoList: TodoListComponent;
+    @ViewChild(TodoInputComponent) cmpOfTodoInput: TodoInputComponent;
 
     constructor(
         private compiler: Compiler,
         private svcDynCmpFactory: DynamicComponentFactory
     ) {}
-    async addTodo() {
+    async addTodo(cmpNewTodo: TodoListItemComponent) {
         let cmpFactTodo = await this.svcDynCmpFactory.createComponent(TodoListItemComponent);
         let newTodoListItem = this.viewOfAppCmp.createComponent(cmpFactTodo);
         this.cmpOfTodoList.numTodos++;
         newTodoListItem.instance.id = this.cmpOfTodoList.numTodos;
+        newTodoListItem.instance.what = this.cmpOfTodoInput.newTodo.what;
     }
 }

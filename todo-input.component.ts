@@ -6,20 +6,27 @@ import { ElementRef } from '@angular/core';
 import { ComponentRef } from '@angular/core';
 import DynamicComponentFactory from './dynamic-component.factory';
 import TodoListItemComponent from './todo-list-item.component';
+import { TemplateRef } from '@angular/core';
+import { AppComponent } from './app.component';
 
 
 @Component({
     selector: 'cmp-todo-input',
     template: `
-        <input #newTodo type="text"/>
+        <input #newTodo (change)="onTextChange(newTodo.value)" type="text"/>
     `
 })
-export default class TodoInputComponent implements AfterViewInit {
+export default class TodoInputComponent {
     @ViewChild('newTodo') viewOfInputCmp: ElementRef; 
+    public newTodo: TodoListItemComponent;
+
     constructor(
         public viewOfThis: ViewContainerRef,
         private svcDynCmpFactory: DynamicComponentFactory
     ){}
-    async ngAfterViewInit() {
+
+    onTextChange(newText: string) {
+        console.log(newText);
+        this.newTodo = { id: NaN, what: newText, done: false };
     }
 }
