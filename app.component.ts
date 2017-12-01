@@ -17,6 +17,7 @@ import TodoInputComponent from './todo-input.component';
     template: `
         <cmp-todo-input></cmp-todo-input>
         <button (click)="addTodo()">Add</button>
+        <br>
         <cmp-todo-list></cmp-todo-list>
     `
 })
@@ -29,7 +30,7 @@ export class AppComponent {
         private compiler: Compiler,
         private svcDynCmpFactory: DynamicComponentFactory
     ) {}
-    async addTodo(cmpNewTodo: TodoListItemComponent) {
+    async addTodo() {
         let cmpFactTodo = await this.svcDynCmpFactory.createComponent(TodoListItemComponent);
         let newTodoListItem = this.viewOfAppCmp.createComponent(cmpFactTodo);
         this.cmpOfTodoList.numTodos++;

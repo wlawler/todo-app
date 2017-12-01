@@ -17,16 +17,14 @@ import { OnInit } from '@angular/core';
     selector: `cmp-todo-list`,
     template: `
         Total TODOs: {{numTodos}}
-        <cmp-todo>
-        </cmp-todo>
     `
 })
 export default class TodoListComponent {
-    @ViewChildren(TodoListItemComponent) cmpTodos: QueryList<TodoListItemComponent>;
+    @ViewChildren(TodoListItemComponent) cmpOfTodos: QueryList<TodoListItemComponent>;
     @ViewChild(TemplateRef) template: TemplateRef<TodoListComponent>;
-    numTodos = 1;
+    numTodos = 0;
 
     getTodoX(whichOne: TodoListItemComponent) {
-        return this.cmpTodos.find((todoX) => todoX.id === whichOne.id);
+        return this.cmpOfTodos.find((todoX) => todoX.id === whichOne.id);
     }   
 }

@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 @Component({
     selector: 'cmp-todo',
     template: `
-        <li>{{id}}:{{what}}</li>
+        <li>{{id}}:{{what}}:{{done}}</li>
     `
 })
 export default class TodoListItemComponent {
