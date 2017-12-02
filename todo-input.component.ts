@@ -8,6 +8,7 @@ import DynamicComponentFactory from './dynamic-component.factory';
 import TodoListItemComponent from './todo-list-item.component';
 import { TemplateRef } from '@angular/core';
 import { AppComponent } from './app.component';
+import TodoModel from './todo.model';
 
 
 @Component({
@@ -18,7 +19,7 @@ import { AppComponent } from './app.component';
 })
 export default class TodoInputComponent {
     @ViewChild('newTodo') viewOfInputCmp: ElementRef; 
-    public newTodo: TodoListItemComponent;
+    public newTodo: TodoModel;
 
     constructor(
         public viewOfThis: ViewContainerRef,
