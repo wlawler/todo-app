@@ -14,12 +14,13 @@ import TodoModel from './todo.model';
 @Component({
     selector: 'cmp-todo-input',
     template: `
-        <input #newTodo (change)="onTextChange(newTodo.value)" type="text"/>
+        <input #input (change)="onTextChange(input.value)" type="text" value="{{currText}}"/>
     `
 })
 export default class TodoInputComponent {
-    @ViewChild('newTodo') viewOfInputCmp: ElementRef; 
+    @ViewChild('input') viewOfInputCmp: ElementRef; 
     public newTodo: TodoModel;
+    currText: string;
 
     constructor(
         public viewOfThis: ViewContainerRef,
@@ -28,6 +29,8 @@ export default class TodoInputComponent {
 
     onTextChange(newText: string) {
         console.log(newText);
-        this.newTodo = { id: NaN, what: newText, done: false };
+        this.currText = newText;
+        console.log(this.currText)
+        this.newTodo = new TodoModel(newText, false);
     }
 }

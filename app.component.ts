@@ -16,11 +16,21 @@ import TodoModel from './todo.model';
 
 @Component({
     selector: 'cmp-app',
+    styles: [`
+        cmp-todo-list {
+            float: left
+        }
+        cmp-todo-list+cmp-todo-list {
+            float: right
+        } 
+    `],
     template: `
         <cmp-todo-input (keyup)="onKeyUp($event)"></cmp-todo-input>
-        <button (click)="addTodo()">Add</button>
+        <button (click)="addTodo(cmpOfTodoList)">Add</button>
         <br>
-        <cmp-todo-list>
+        <cmp-todo-list #list1 (drop)="onDrop(this.cmpOfTodoList.modelDragged)" (dragover)="onDragOver($event)">
+        </cmp-todo-list>
+        <cmp-todo-list #list2 (drop)="onDrop(this.cmpOfTodoList.modelDragged)" (dragover)="onDragOver($event)">
         </cmp-todo-list>
     `,
 })
@@ -35,19 +45,26 @@ export class AppComponent {
         private svcDynCmpFactory: DynamicComponentFactory
     ) {}
 
-    async addTodo() {
-        let newTodoListItem = this.cmpOfTodoInput.newTodo;
-        this.cmpOfTodoList.currTodo = newTodoListItem;
-        this.cmpOfTodoList.liDynTodos.push(newTodoListItem);
-        this.cmpOfTodoList.numTodos++;
-        newTodoListItem.id = this.cmpOfTodoList.numTodos;
-        newTodoListItem.what = this.cmpOfTodoInput.newTodo.what;
+    async onDrop(modelDragged: TodoModel) {
+        console.log("Drop");
+//        this.cmpOfTodoList.removeTodo(modelDragged);
+        this.addTodo(this.cmpOfTodoList2, modelDragged);    
+    }
+
+    async onDragOver(dragEvent: DragEvent) {
+        // https://stackoverflow.com/a/21341021/1156933
+        // Required to cancel dragover to get the drop event to fire
+        dragEvent.preventDefault();
+    }
+    async addTodo(todoList: TodoListComponent, newTodo: TodoModel) {
+        todoList.addTodo(newTodo);
+        this.cmpOfTodoInput.currText = '';
     }
 
     async onKeyUp(event: KeyboardEvent) {
         if(event.which === Key.Enter) {
             console.log("enter");
-            this.addTodo();
+            this.addTodo(this.cmpOfTodoList, this.cmpOfTodoInput.newTodo);
         }
     }
 }
