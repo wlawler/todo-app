@@ -17,6 +17,7 @@ import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 import { ChangeDetectorRef } from '@angular/core';
 import TodoModel from './todo.model';
 import { EventEmitter } from '@angular/core';
+import TodoList from './i-todo-list';
 
 @Component({
     selector: `cmp-todo-list`,
@@ -34,7 +35,7 @@ import { EventEmitter } from '@angular/core';
         </ul>
     `
 })
-export default class TodoListComponent {
+export default class TodoListComponent implements TodoList {
     @ViewChildren(TodoListItemComponent) public todoListItems: QueryList<TodoListItemComponent>;
     @ViewChild(TemplateRef) public tmplOfThis: TemplateRef<TodoListItemComponent>;
 
@@ -58,7 +59,16 @@ export default class TodoListComponent {
         let tdModelIdx = this.liDynTodos.findIndex(todo => todo.id === whichOne.id);
         console.log(this.liDynTodos.splice(tdModelIdx, 1));
     }
-
+    hasDuplicates(inputText: string) : boolean {
+        let dupFound = false;
+        this.liDynTodos.forEach((todo) => {
+            if (todo.what === inputText) {
+                console.log("Duplicate Found");
+                dupFound = true;
+            }
+        })
+        return dupFound;
+    }
     getComponentForTodo(whichOne: TodoModel) {
        if (this.liDynTodos.find(todo => todo.id === whichOne.id))
        {

@@ -25,7 +25,7 @@ import TodoModel from './todo.model';
         } 
     `],
     template: `
-        <cmp-todo-input (keyup)="onKeyUp($event)"></cmp-todo-input>
+        <cmp-todo-input (keyup)="onKeyUp($event)" [parent]="this"></cmp-todo-input>
         <button (click)="addTodo(cmpOfTodoList)">Add</button>
         <br>
         <cmp-todo-list #list1 (drop)="onDrop(this.cmpOfTodoList.modelDragged)" (dragover)="onDragOver($event)">
@@ -47,7 +47,7 @@ export class AppComponent {
 
     async onDrop(modelDragged: TodoModel) {
         console.log("Drop");
-//        this.cmpOfTodoList.removeTodo(modelDragged);
+        this.cmpOfTodoList.removeTodo(modelDragged);
         this.addTodo(this.cmpOfTodoList2, modelDragged);    
     }
 
@@ -57,8 +57,12 @@ export class AppComponent {
         dragEvent.preventDefault();
     }
     async addTodo(todoList: TodoListComponent, newTodo: TodoModel) {
-        todoList.addTodo(newTodo);
-        this.cmpOfTodoInput.currText = '';
+        //this.cmpOfTodoInput.currText = '';
+        if (!this.cmpOfTodoInput.checkForDuplicates(todoList))
+        {
+            this.cmpOfTodoInput.currText = '';
+            todoList.addTodo(newTodo);
+        }
     }
 
     async onKeyUp(event: KeyboardEvent) {
