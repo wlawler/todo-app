@@ -10,13 +10,14 @@ import { TemplateRef } from '@angular/core';
 import { AppComponent } from './app.component';
 import TodoModel from './todo.model';
 import TodoListComponent from './todo-list.component';
+import DuplicateCheckService, { DuplicateStatus } from './duplicate-check.service';
 
 
 @Component({
     selector: 'cmp-todo-input',
     template: `
-        <input [style.borderColor]="color" #input (change)="onTextChange(input.value)" type="text" value="{{currText}}"/>
-        <div *ngIf="error">You entered a duplicate TODO!</div>
+        <input [style.borderColor]="duplicateStatus.color" #input (change)="onTextChange(input.value)" type="text" value="{{currText}}"/>
+        <div *ngIf="duplicateStatus.error">You entered a duplicate TODO!</div>
     `
 })
 export default class TodoInputComponent {
@@ -27,27 +28,11 @@ export default class TodoInputComponent {
     public newTodo: TodoModel;
     currText: string;
     newText: string;
+    duplicateStatus: DuplicateStatus = { color: 'green', error: false};
 
     constructor(
         public viewOfThis: ViewContainerRef,
-        private svcDynCmpFactory: DynamicComponentFactory
     ){}
-
-    checkForDuplicates(lstOfComponents: TodoListComponent, suspectText: string): boolean {
-        console.log("Setting errors")
-        if (/*lstOfComponents.hasDuplicates(this.currText) ||*/
-            lstOfComponents.hasDuplicates(suspectText)) {
-            console.log("Red");
-            this.color = 'red';
-            this.error = true;
-        }
-        else { 
-            console.log("Green");
-            this.color = 'green';
-            this.error = false;
-        }
-        return this.error;
-    }
 
     onTextChange(newText: string) {
         console.log("Text Change");

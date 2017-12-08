@@ -8,6 +8,7 @@ import TodoListComponent from './todo-list.component';
 import TodoListItemComponent from './todo-list-item.component';
 import TodoInputComponent from './todo-input.component';
 import DynamicComponentFactory from './dynamic-component.factory';
+import DuplicateCheckService from './duplicate-check.service';
 
 @NgModule({
     entryComponents: [TodoListItemComponent],
@@ -16,7 +17,7 @@ import DynamicComponentFactory from './dynamic-component.factory';
 //       RouterModule.forRoot(ROUTES),
        HttpModule
     ],
-    providers: [DynamicComponentFactory],
+    providers: [DynamicComponentFactory, DuplicateCheckService],
     declarations: [AppComponent, TodoListComponent, TodoInputComponent, TodoListItemComponent],
     exports: [AppComponent],
     bootstrap: [AppComponent]

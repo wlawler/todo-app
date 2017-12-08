@@ -9,6 +9,7 @@ import { EventEmitter } from '@angular/core';
 import { Key } from 'ts-keycode-enum';
 import { ElementRef } from '@angular/core';
 import { Renderer } from '@angular/core';
+import DuplicateCheckService from './duplicate-check.service';
 
 
 @Component({
@@ -48,13 +49,15 @@ export default class TodoListItemComponent {
     @ViewChild('editField') cmpOfEditField: ElementRef;
     editing = false;
 
-    constructor() {}
+    constructor(
+        private svcDuplicateStatusCheck: DuplicateCheckService
+    ) {}
 
     async onEditCompleted(event: KeyboardEvent, currValue: string) {
         if(event.which === Key.Enter) {
             console.log("enter");
             this.editing = false;
-            if (this.parent.parent.cmpOfTodoInput.checkForDuplicates(this.parent, this.model.what))
+//            if (this.svcDuplicateStatusCheck.checkForDuplicates(this.parent, this.model.what))
                 this.model.what = currValue;
         }
     }

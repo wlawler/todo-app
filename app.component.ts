@@ -13,6 +13,7 @@ import TodoListItemComponent from './todo-list-item.component';
 import DynamicComponentFactory from './dynamic-component.factory';
 import TodoInputComponent from './todo-input.component';
 import TodoModel from './todo.model';
+import DuplicateCheckService from './duplicate-check.service';
 
 @Component({
     selector: 'cmp-app',
@@ -42,7 +43,7 @@ export class AppComponent {
     constructor(
         private compiler: Compiler,
         private viewOfAppCmp: ViewContainerRef,
-        private svcDynCmpFactory: DynamicComponentFactory
+        private svcDuplicateStatusCheck: DuplicateCheckService
     ) {}
 
     async onDrop(sourceList: TodoListComponent, targetList: TodoListComponent) {
@@ -59,11 +60,13 @@ export class AppComponent {
     }
     async addTodo(todoList: TodoListComponent, newTodo: TodoModel) {
         //this.cmpOfTodoInput.currText = '';
-        if (!this.cmpOfTodoInput.checkForDuplicates(todoList, newTodo.what))
+        let dupStatus = this.svcDuplicateStatusCheck.checkForDuplicates(todoList, newTodo.what);
+        if (!dupStatus.error)
         {
             this.cmpOfTodoInput.currText = '';
             todoList.addTodo(newTodo);
         }
+        this.cmpOfTodoInput.duplicateStatus = dupStatus;
     }
 
     async onKeyUp(event: KeyboardEvent) {
