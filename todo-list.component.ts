@@ -1,4 +1,4 @@
-import { Component, ViewRef, Injectable, Output } from '@angular/core'
+import { Component, ViewRef, Injectable, Output, Input } from '@angular/core'
 import { ViewChildren } from '@angular/core'
 import { QueryList } from '@angular/core';
 import { ViewChild } from '@angular/core';
@@ -17,7 +17,7 @@ import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 import { ChangeDetectorRef } from '@angular/core';
 import TodoModel from './todo.model';
 import { EventEmitter } from '@angular/core';
-import TodoList from './i-todo-list';
+import { AppComponent } from './app.component';
 
 @Component({
     selector: `cmp-todo-list`,
@@ -35,9 +35,10 @@ import TodoList from './i-todo-list';
         </ul>
     `
 })
-export default class TodoListComponent implements TodoList {
+export default class TodoListComponent {
     @ViewChildren(TodoListItemComponent) public todoListItems: QueryList<TodoListItemComponent>;
     @ViewChild(TemplateRef) public tmplOfThis: TemplateRef<TodoListItemComponent>;
+    @Input() parent: AppComponent;
 
     numTodos = 0;
     liDynTodos = new Array<TodoModel>();
@@ -52,15 +53,16 @@ export default class TodoListComponent implements TodoList {
     }
     addTodo(newTodo: TodoModel) {
         this.currTodo = newTodo;
-        if (this.liDynTodos.indexOf(newTodo) === -1)
+    //    if (this.liDynTodos.indexOf(newTodo) === -1)
             this.liDynTodos.push(newTodo);
     }
     removeTodo(whichOne: TodoModel) {
         let tdModelIdx = this.liDynTodos.findIndex(todo => todo.id === whichOne.id);
-        console.log(this.liDynTodos.splice(tdModelIdx, 1));
+        console.log("Removing todo:", this.liDynTodos.splice(tdModelIdx, 1));
     }
     hasDuplicates(inputText: string) : boolean {
         let dupFound = false;
+        console.log("Possible duplicates: ", this.liDynTodos);
         this.liDynTodos.forEach((todo) => {
             if (todo.what === inputText) {
                 console.log("Duplicate Found");

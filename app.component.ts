@@ -28,9 +28,9 @@ import TodoModel from './todo.model';
         <cmp-todo-input (keyup)="onKeyUp($event)" [parent]="this"></cmp-todo-input>
         <button (click)="addTodo(cmpOfTodoList)">Add</button>
         <br>
-        <cmp-todo-list #list1 (drop)="onDrop(this.cmpOfTodoList.modelDragged)" (dragover)="onDragOver($event)">
+        <cmp-todo-list #list1 [parent]="this" (drop)="onDrop(this.cmpOfTodoList2, this.cmpOfTodoList)" (dragover)="onDragOver($event)">
         </cmp-todo-list>
-        <cmp-todo-list #list2 (drop)="onDrop(this.cmpOfTodoList.modelDragged)" (dragover)="onDragOver($event)">
+        <cmp-todo-list #list2 [parent]="this" (drop)="onDrop(this.cmpOfTodoList, this.cmpOfTodoList2)" (dragover)="onDragOver($event)">
         </cmp-todo-list>
     `,
 })
@@ -45,10 +45,11 @@ export class AppComponent {
         private svcDynCmpFactory: DynamicComponentFactory
     ) {}
 
-    async onDrop(modelDragged: TodoModel) {
+    async onDrop(sourceList: TodoListComponent, targetList: TodoListComponent) {
         console.log("Drop");
-        this.cmpOfTodoList.removeTodo(modelDragged);
-        this.addTodo(this.cmpOfTodoList2, modelDragged);    
+        console.log(sourceList.modelDragged);
+        sourceList.removeTodo(sourceList.modelDragged);
+        this.addTodo(targetList, sourceList.modelDragged);    
     }
 
     async onDragOver(dragEvent: DragEvent) {
@@ -58,7 +59,7 @@ export class AppComponent {
     }
     async addTodo(todoList: TodoListComponent, newTodo: TodoModel) {
         //this.cmpOfTodoInput.currText = '';
-        if (!this.cmpOfTodoInput.checkForDuplicates(todoList))
+        if (!this.cmpOfTodoInput.checkForDuplicates(todoList, newTodo.what))
         {
             this.cmpOfTodoInput.currText = '';
             todoList.addTodo(newTodo);

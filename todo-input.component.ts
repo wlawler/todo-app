@@ -33,12 +33,16 @@ export default class TodoInputComponent {
         private svcDynCmpFactory: DynamicComponentFactory
     ){}
 
-    checkForDuplicates(lstOfComponents: TodoListComponent): boolean {
-        if (lstOfComponents.hasDuplicates(this.currText)) {
+    checkForDuplicates(lstOfComponents: TodoListComponent, suspectText: string): boolean {
+        console.log("Setting errors")
+        if (/*lstOfComponents.hasDuplicates(this.currText) ||*/
+            lstOfComponents.hasDuplicates(suspectText)) {
+            console.log("Red");
             this.color = 'red';
             this.error = true;
         }
         else { 
+            console.log("Green");
             this.color = 'green';
             this.error = false;
         }

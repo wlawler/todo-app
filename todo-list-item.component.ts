@@ -6,17 +6,36 @@ import TodoModel from './todo.model';
 import TodoListComponent from './todo-list.component';
 import { Injector } from './injector';
 import { EventEmitter } from '@angular/core';
+import { Key } from 'ts-keycode-enum';
+import { ElementRef } from '@angular/core';
+import { Renderer } from '@angular/core';
 
 
 @Component({
     selector: 'cmp-todo-item',
     template: `
         <li draggable="true" 
-            [ngStyle]="{ 'background-color': 'transparent' }"
+            [ngStyle]="{ 
+                'background-color': 'transparent', 
+                'listStyleType': 'none' 
+            }"
             (dragstart)="onDrag(modelDragged)" 
-            (dragend)="onDrop(modelDragged)">
-            {{model.id}}:{{model.what}}:{{model.done}}
+            (dragend)="onDrop(modelDragged)"
+        >
+            <div 
+                (mousedown)="toggleEditField()"
+                (mouseup)="focusEditField()"
+            >
+                {{model.id}}:
+                {{!editing? model.what: ''}}
+            <!--    <input 
+                    *ngIf="editing" #editField 
+                    (keyup)="onEditCompleted($event, editField.value)" 
+                    value={{model.what}}
+                />:-->
+                {{model.done}}
             <input #completed (click)="onChecked()" type="checkbox"/>
+            </div>
         </li>
     `
 })
@@ -26,9 +45,30 @@ export default class TodoListItemComponent {
     @Input() model: TodoModel;
     @Output() modelDragStart: EventEmitter<TodoModel> = new EventEmitter();
     @Output() modelDragEnd: EventEmitter<TodoModel> = new EventEmitter();
+    @ViewChild('editField') cmpOfEditField: ElementRef;
+    editing = false;
 
     constructor() {}
 
+    async onEditCompleted(event: KeyboardEvent, currValue: string) {
+        if(event.which === Key.Enter) {
+            console.log("enter");
+            this.editing = false;
+            if (this.parent.parent.cmpOfTodoInput.checkForDuplicates(this.parent, this.model.what))
+                this.model.what = currValue;
+        }
+    }
+    async focusEditField () {
+        if (this.editing) {
+            console.log(this.cmpOfEditField);
+            this.cmpOfEditField.nativeElement.focus();
+        }
+    }
+    async toggleEditField() {
+        this.editing = !this.editing;
+    }
+    async handleEdit(currValue: string) {
+    }
     async onDrag(tdLiCmp: TodoModel) {
         console.log("drag");
         this.modelDragged = this.parent.liDynTodos.find(todo => todo.id === this.model.id);
