@@ -20,20 +20,20 @@ import DuplicateCheckService from './duplicate-check.service';
                 'background-color': 'transparent', 
                 'listStyleType': 'none' 
             }"
-            (dragstart)="onDrag(modelDragged)" 
-            (dragend)="onDrop(modelDragged)"
+            (dragstart)="onDragStart(model)" 
+            (dragend)="onDragEnd(model)"
         >
             <div 
-                (mousedown)="toggleEditField()"
+                (mousedown)="toggleEditField($event)"
                 (mouseup)="focusEditField()"
             >
                 {{model.id}}:
                 {{!editing? model.what: ''}}
-            <!--    <input 
+                <input 
                     *ngIf="editing" #editField 
                     (keyup)="onEditCompleted($event, editField.value)" 
                     value={{model.what}}
-                />:-->
+                />:
                 {{model.done}}
             <input #completed (click)="onChecked()" type="checkbox"/>
             </div>
@@ -41,24 +41,28 @@ import DuplicateCheckService from './duplicate-check.service';
     `
 })
 export default class TodoListItemComponent {
-    private modelDragged: TodoModel | undefined;
     @Input() public parent: TodoListComponent;
     @Input() model: TodoModel;
-    @Output() modelDragStart: EventEmitter<TodoModel> = new EventEmitter();
-    @Output() modelDragEnd: EventEmitter<TodoModel> = new EventEmitter();
     @ViewChild('editField') cmpOfEditField: ElementRef;
     editing = false;
+    dragging = false;
 
     constructor(
         private svcDuplicateStatusCheck: DuplicateCheckService
     ) {}
 
-    async onEditCompleted(event: KeyboardEvent, currValue: string) {
+    async onEditCompleted(event: KeyboardEvent, newTodoText: string) {
         if(event.which === Key.Enter) {
             console.log("enter");
             this.editing = false;
-//            if (this.svcDuplicateStatusCheck.checkForDuplicates(this.parent, this.model.what))
-                this.model.what = currValue;
+            let prevText = this.model.what;
+            this.model.what = newTodoText;
+            console.log(this.model.what);
+            let dupStatus = this.svcDuplicateStatusCheck.checkForDuplicates(this.parent, this.model);
+
+            if (!dupStatus.error)
+                this.model.what = newTodoText;
+            else this.model.what = prevText;
         }
     }
     async focusEditField () {
@@ -68,18 +72,17 @@ export default class TodoListItemComponent {
         }
     }
     async toggleEditField() {
-        this.editing = !this.editing;
+        if (!this.dragging)
+            this.editing = !this.editing;
     }
-    async handleEdit(currValue: string) {
-    }
-    async onDrag(tdLiCmp: TodoModel) {
-        console.log("drag");
-        this.modelDragged = this.parent.liDynTodos.find(todo => todo.id === this.model.id);
-        this.modelDragStart.emit(this.modelDragged);
+    async onDragStart(tdLiCmp: TodoModel) {
+        console.log("Drag Start");
+        this.dragging = true;
+        this.parent.currTodo = this.model;
     }
 
-    async onDrop(tdLiCmp: TodoModel) {
-        this.modelDragEnd.emit(tdLiCmp);
+    async onDragEnd(tdLiCmp: TodoModel) {
+        this.dragging = false;
     }
 
     onChecked() {

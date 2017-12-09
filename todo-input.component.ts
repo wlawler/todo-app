@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import TodoModel from './todo.model';
 import TodoListComponent from './todo-list.component';
 import DuplicateCheckService, { DuplicateStatus } from './duplicate-check.service';
+import { Subscriber } from 'rxjs/Subscriber';
 
 
 @Component({
@@ -31,10 +32,19 @@ export default class TodoInputComponent {
     duplicateStatus: DuplicateStatus = { color: 'green', error: false};
 
     constructor(
-        public viewOfThis: ViewContainerRef,
+        private svcDuplicateChecker: DuplicateCheckService
     ){}
 
-    onTextChange(newText: string) {
+    async ngOnInit() {
+        console.log("Awaiting duplicate status", this.duplicateStatus);
+        this.svcDuplicateChecker.duplicateStatusChange.subscribe(await this.onDuplicateStatusChanged);
+    }
+
+    onDuplicateStatusChanged = async (duplicateStatus: DuplicateStatus) => {
+        this.duplicateStatus = duplicateStatus;
+        console.log("Got duplicate status", this.duplicateStatus);
+    }
+    async onTextChange(newText: string) {
         console.log("Text Change");
         this.currText = this.newText = newText;
         this.newTodo = new TodoModel(newText, false);

@@ -1,4 +1,4 @@
-import {Component, NgModule, Compiler, Type, ViewChildren} from '@angular/core';
+import {Component, NgModule, Compiler, Type, ViewChildren, Query} from '@angular/core';
 import { ViewChild } from '@angular/core';
 import TodoListComponent from './todo-list.component';
 import { QueryList } from '@angular/core';
@@ -38,6 +38,7 @@ import DuplicateCheckService from './duplicate-check.service';
 export class AppComponent {
     @ViewChild(TodoListComponent) cmpOfTodoList: TodoListComponent;
     @ViewChild('list2') cmpOfTodoList2: TodoListComponent;
+    @ViewChildren(TodoListComponent) cmpsOfTodoList: QueryList<TodoListComponent>;
     @ViewChild(TodoInputComponent) cmpOfTodoInput: TodoInputComponent;
 
     constructor(
@@ -48,9 +49,17 @@ export class AppComponent {
 
     async onDrop(sourceList: TodoListComponent, targetList: TodoListComponent) {
         console.log("Drop");
-        console.log(sourceList.modelDragged);
-        sourceList.removeTodo(sourceList.modelDragged);
-        this.addTodo(targetList, sourceList.modelDragged);    
+        console.log(sourceList.currTodo);
+
+        if (sourceList.currTodo) {
+            let dupStatus = this.svcDuplicateStatusCheck.checkForDuplicates(targetList, sourceList.currTodo);
+            console.log("Drop---Checking for duplicates: ", dupStatus);
+            if (!dupStatus.error)
+            {
+                sourceList.removeTodo(sourceList.currTodo);
+                this.addTodo(targetList, sourceList.currTodo);    
+            }
+        }   
     }
 
     async onDragOver(dragEvent: DragEvent) {
@@ -60,13 +69,12 @@ export class AppComponent {
     }
     async addTodo(todoList: TodoListComponent, newTodo: TodoModel) {
         //this.cmpOfTodoInput.currText = '';
-        let dupStatus = this.svcDuplicateStatusCheck.checkForDuplicates(todoList, newTodo.what);
+        let dupStatus = this.svcDuplicateStatusCheck.checkForDuplicates(todoList, newTodo);
         if (!dupStatus.error)
         {
             this.cmpOfTodoInput.currText = '';
             todoList.addTodo(newTodo);
         }
-        this.cmpOfTodoInput.duplicateStatus = dupStatus;
     }
 
     async onKeyUp(event: KeyboardEvent) {

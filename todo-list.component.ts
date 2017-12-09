@@ -28,44 +28,36 @@ import { AppComponent } from './app.component';
         <ul #todoContainer>
             <cmp-todo-item 
             *ngFor="let todo of liDynTodos" 
-            (modelDragStart)="onDrag($event)"
-            (modelDragEnd)="onDragEnd($event)" 
             [model]="todo" 
             [parent]="this"></cmp-todo-item>
         </ul>
     `
 })
 export default class TodoListComponent {
-    @ViewChildren(TodoListItemComponent) public todoListItems: QueryList<TodoListItemComponent>;
+    @ViewChildren(TodoListItemComponent) public cmpOfTodoListItems: QueryList<TodoListItemComponent>;
     @ViewChild(TemplateRef) public tmplOfThis: TemplateRef<TodoListItemComponent>;
+    @Output() beforeTodoModelSet = new EventEmitter<TodoModel>();
     @Input() parent: AppComponent;
 
     numTodos = 0;
     liDynTodos = new Array<TodoModel>();
     currTodo: TodoModel;
-    modelDragged: TodoModel;
 
-    onDragEnd(modelDragged: TodoModel) {
-        this.modelDragged = modelDragged;
-    }
-    onDrag(modelDragged: TodoModel) {
-        this.modelDragged = modelDragged;
-    }
     addTodo(newTodo: TodoModel) {
         this.currTodo = newTodo;
-    //    if (this.liDynTodos.indexOf(newTodo) === -1)
-            this.liDynTodos.push(newTodo);
+        this.liDynTodos.push(newTodo);
     }
     removeTodo(whichOne: TodoModel) {
         let tdModelIdx = this.liDynTodos.findIndex(todo => todo.id === whichOne.id);
         console.log("Removing todo:", this.liDynTodos.splice(tdModelIdx, 1));
     }
-    hasDuplicates(inputText: string) : boolean {
+    hasDuplicates(inputTodo: TodoModel) {
         let dupFound = false;
-        console.log("Possible duplicates: ", this.liDynTodos);
+        console.log("Possible duplicates: ");
         this.liDynTodos.forEach((todo) => {
-            if (todo.what === inputText) {
-                console.log("Duplicate Found");
+            console.log(todo);
+            if (todo.what === inputTodo.what && todo.id !== inputTodo.id) {
+                console.log("Duplicate Found: ", todo.what, inputTodo.what);
                 dupFound = true;
             }
         })
@@ -74,7 +66,7 @@ export default class TodoListComponent {
     getComponentForTodo(whichOne: TodoModel) {
        if (this.liDynTodos.find(todo => todo.id === whichOne.id))
        {
-          let tdLiCmp = this.todoListItems.find(tdLstItemCmp => tdLstItemCmp.model.id === whichOne.id);
+          let tdLiCmp = this.cmpOfTodoListItems.find(tdLstItemCmp => tdLstItemCmp.model.id === whichOne.id);
           return tdLiCmp;
        }
     }
