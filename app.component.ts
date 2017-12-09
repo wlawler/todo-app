@@ -27,11 +27,11 @@ import DuplicateCheckService from './duplicate-check.service';
     `],
     template: `
         <cmp-todo-input (keyup)="onKeyUp($event)" [parent]="this"></cmp-todo-input>
-        <button (click)="addTodo(cmpOfTodoList)">Add</button>
+        <button (click)="addTodo(cmpOfTodoList, this.cmpOfTodoInput.newTodo)">Add</button>
         <br>
-        <cmp-todo-list #list1 [parent]="this" (drop)="onDrop(this.cmpOfTodoList2, this.cmpOfTodoList)" (dragover)="onDragOver($event)">
+        <cmp-todo-list #list1 [parent]="this" (drop)="onDrop(cmpOfTodoList2, cmpOfTodoList)" (dragover)="onDragOver($event)">
         </cmp-todo-list>
-        <cmp-todo-list #list2 [parent]="this" (drop)="onDrop(this.cmpOfTodoList, this.cmpOfTodoList2)" (dragover)="onDragOver($event)">
+        <cmp-todo-list #list2 [parent]="this" (drop)="onDrop(cmpOfTodoList, cmpOfTodoList2)" (dragover)="onDragOver($event)">
         </cmp-todo-list>
     `,
 })
