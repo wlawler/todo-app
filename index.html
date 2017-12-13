@@ -1,11 +1,13 @@
 <html>
     <base href="/">
     <head>
+        <!--These are node modules that allow the todo-app to run-->
         <script src="./node_modules/core-js/client/shim.min.js"></script>
         <script src="./node_modules/zone.js/dist/zone.js"></script>
         <script src="./node_modules/reflect-metadata/Reflect.js"></script>
     </head>
     <body>
+        <!-- Below is a component that actually prints html into the webpage when an item is added to the todo list -->
         <cmp-app></cmp-app>
     </body>
     <script src="/webpack.bundle.js"></script>
