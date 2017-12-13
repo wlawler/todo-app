@@ -1,3 +1,4 @@
+//This controls the list itself within the todo-app
 import { Component, ViewRef, Injectable, Output, Input } from '@angular/core'
 import { ViewChildren } from '@angular/core'
 import { QueryList } from '@angular/core';

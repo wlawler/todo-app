@@ -1,3 +1,4 @@
+// This page controls the input box of the todo-app
 import { Component, Input } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { ViewContainerRef } from '@angular/core';

@@ -1,3 +1,4 @@
+//This controls the items within the list
 import { Component, Input, Inject, Output } from '@angular/core'
 import { AppComponent } from './app.component';
 import { ViewChild } from '@angular/core';
