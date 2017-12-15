@@ -14,9 +14,11 @@ import DynamicComponentFactory from './dynamic-component.factory';
 import TodoInputComponent from './todo-input.component';
 import TodoModel from './todo.model';
 import DuplicateCheckService from './duplicate-check.service';
-
+//This is where we make our tools.//
 @Component({
+//cmp-app is the reference name given to our new tool//
     selector: 'cmp-app',
+   //Below the program is being directed as to where to place the product of our tool on the interface//
     styles: [`
         cmp-todo-list {
             float: left
@@ -25,6 +27,12 @@ import DuplicateCheckService from './duplicate-check.service';
             float: right
         } 
     `],
+//Below is there we specify how we want our tool to act. First, we instruct the tool to//
+//activate once something that has been pressed is releasd. Then we specify that the//
+//thing that we want clicked and released is a button labeled "add"//
+//Further when the add button is release, we want was typed in the input box to be added//
+//to the list below//
+
     template: `
         <cmp-todo-input (keyup)="onKeyUp($event)" [parent]="this"></cmp-todo-input>
         <button (click)="addTodo(cmpOfTodoList, this.cmpOfTodoInput.newTodo)">Add</button>
