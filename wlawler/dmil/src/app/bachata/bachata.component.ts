@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./bachata.component.css']
 })
 export class BachataComponent implements OnInit {
-
+moveStatus: string = 'Not Learned';
   constructor() { }
 
   ngOnInit() {
