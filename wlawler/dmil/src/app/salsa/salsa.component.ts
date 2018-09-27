@@ -7,6 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SalsaComponent implements OnInit {
 
+  salsaStatus:string="Not Learned";
+
+  getSalsaStatus(){
+    return this.salsaStatus;
+  }
   constructor() { }
 
   ngOnInit() {
