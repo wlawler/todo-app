@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ZoukComponent implements OnInit {
 
+  zoukMoveStatus:string = 'Not Learned';
   constructor() { }
 
   ngOnInit() {
