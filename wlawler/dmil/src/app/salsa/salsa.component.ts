@@ -6,13 +6,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./salsa.component.css']
 })
 export class SalsaComponent implements OnInit {
+     
+  testingAngularButton= false;
 
   salsaStatus:string="Not Learned";
 
   getSalsaStatus(){
     return this.salsaStatus;
   }
-  constructor() { }
+  constructor() {
+    setTimeout(() => {
+      this.testingAngularButton = true;
+    }, 5000)
+   }
 
   ngOnInit() {
   }
