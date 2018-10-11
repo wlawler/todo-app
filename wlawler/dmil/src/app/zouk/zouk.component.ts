@@ -12,6 +12,8 @@ export class ZoukComponent implements OnInit {
 
   zoukStatus:string="Not Learned";
 
+  zoukSongoftheWeek="No song yet, click the button";
+
   getZoukStatus (){
     return this.zoukStatus;
   }
@@ -23,4 +25,7 @@ setTimeout(() => {
 
   ngOnInit()
   {}
+  onZoukSongoftheWeek(){
+    this.zoukSongoftheWeek="DJ KahKah - Side to P.I.M.P";
+  }
 }
