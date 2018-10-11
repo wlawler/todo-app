@@ -9,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class BachataComponent implements OnInit {
   testingAngularButtonBachata = false;
   moveStatus: string = 'Not Learned';
+  bachataSongoftheWeek = 'No song yet, click the button';
   getMoveStatus() {
     return this.moveStatus;
   }
@@ -21,6 +22,8 @@ export class BachataComponent implements OnInit {
 
   ngOnInit() {
   }
-
+onBachatasongoftheWeek(){
+  this.bachataSongoftheWeek="Grupo Extra-Me Emborrachare";
 }
-  
+}
+   
