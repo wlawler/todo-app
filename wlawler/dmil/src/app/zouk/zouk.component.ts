@@ -5,12 +5,22 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './zouk.component.html',
   styleUrls: ['./zouk.component.css']
 })
+
 export class ZoukComponent implements OnInit {
 
-  zoukMoveStatus:string = 'Not Learned';
-  constructor() { }
+  testingAngularButtonZouk= false;
 
-  ngOnInit() {
+  zoukStatus:string="Not Learned";
+
+  getZoukStatus (){
+    return this.zoukStatus;
+  }
+  constructor(){
+setTimeout(() => {
+  this.testingAngularButtonZouk =true;
+}, 5000)
   }
 
+  ngOnInit()
+  {}
 }
