@@ -9,6 +9,8 @@ export class SalsaComponent implements OnInit {
      
   testingAngularButton= false;
 
+  songoftheWeek='No Song, you need to click the button';
+
   salsaStatus:string="Not Learned";
 
   getSalsaStatus(){
@@ -23,4 +25,7 @@ export class SalsaComponent implements OnInit {
   ngOnInit() {
   }
 
+  onsongoftheWeek(){
+    this.songoftheWeek = 'Ricky Campanelli - Mi Rumbon';
+  }
 }
